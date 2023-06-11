@@ -126,7 +126,7 @@ def train_ae(name, rdim):
     torch.save(feat, f'{name}.feature')
     torch.save(data, f'{name}.adj')
     torch.save(mod, f'{name}.mod')
-    return time
+    return elapsed_time
 
 class TransformedDataset(InMemoryDataset):
     def __init__(self, root, name, view, node_feature, label, transform=None, pre_transform=None):
