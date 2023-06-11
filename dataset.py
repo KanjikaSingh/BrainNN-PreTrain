@@ -71,7 +71,7 @@ def train_ae(name, rdim):
         for i in range(718):
             mod[i] = torch.Tensor(nx.modularity_matrix(from_numpy_array(m['X'][i, 0][:, :, 1])))
             data[i] = torch.Tensor(m['X'][i, 0][:, :, 1])
-    elif name == 'PPMI_FSL':
+    elif name == 'PPMI':
         data = torch.empty(718, 84, 84)
         mod = torch.empty(718, 84, 84)
         for i in range(718):
@@ -83,7 +83,7 @@ def train_ae(name, rdim):
     AE = Autoencoder(data.shape[1], rdim)
     optimizer = torch.optim.Adam(AE.parameters(), lr=0.02)
     if data.shape[1] == 84:
-        connectivity = torch.Tensor(np.load("PPMI_Conn.arr", allow_pickle=True))
+        connectivity = torch.Tensor(np.load("Data/PPMI_Conn.arr", allow_pickle=True))
     elif data.shape[1] == 82:
         connectivity = torch.Tensor(np.load("BP_Conn.arr", allow_pickle=True))
     elif data.shape[1] == 90:
