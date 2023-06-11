@@ -1,5 +1,6 @@
 import networkx as nx
 import torch
+import time
 import numpy as np
 import os.path as osp
 import torch.nn.functional as F
@@ -92,7 +93,7 @@ def train_ae(name, rdim):
     id = np.arange(data.shape[0]).tolist()
     n = 20
     batch_idx = [id[i:i + n] for i in range(0, len(id), n)]
-
+    start_time = time.time()
     with tqdm(total=100, desc="Progress") as pbar:
         for k in range(100):
             l = 0.0
@@ -112,7 +113,7 @@ def train_ae(name, rdim):
                 l += loss.item()
             pbar.set_postfix({"loss": l})
             pbar.update()
-
+    elapsed_time = time.time() - start_time
     for _, param1 in AE.named_parameters():
         transform = param1.detach()
 
@@ -125,6 +126,7 @@ def train_ae(name, rdim):
     torch.save(feat, f'{name}.feature')
     torch.save(data, f'{name}.adj')
     torch.save(mod, f'{name}.mod')
+    return time
 
 class TransformedDataset(InMemoryDataset):
     def __init__(self, root, name, view, node_feature, label, transform=None, pre_transform=None):
